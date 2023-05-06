@@ -87,8 +87,7 @@ public class Database<T extends DatabaseService & Serializable> {
             new DatabaseException("Could not restore!").printStackTrace();;
             return false;
         }
-    }
-    
+    }   
     final public T get(String UID){
         if(!DATABASE_EXIST) return null;
         if(exist(UID)) return DATA.get(UID);

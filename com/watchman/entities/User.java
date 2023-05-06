@@ -18,6 +18,12 @@ public class User implements DatabaseService, Serializable{
         PASSWORD = password;
         details = userDetails;
     }
+    
+    @Override
+    public String toString() {
+        return "User [ID=" + ID + ", USERNAME=" + USERNAME + ", ROLE=" + ROLE + ", PASSWORD=" + PASSWORD + ", details="
+                + details + "]";
+    }
 
     @Override
     public String getID() {
