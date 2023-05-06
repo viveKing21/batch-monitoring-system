@@ -10,34 +10,69 @@ public class Print{
         for(int i = 0; i < length; i++) str.append(txt);
         return str.toString();
     }
-    public static String wrapStyle(Object txt, String code){
-        if(code == null) return txt.toString();
-        StringBuilder wrapString = new StringBuilder(code);
-        wrapString.append(txt.toString());
-        wrapString.append(Design.RESET);
-
-        return wrapString.toString();
-    }
     public static String wrapStyle(Object txt, byte... STYLE){
         if(STYLE.length == 0) return txt.toString();
-        
-        StringBuilder wrapString = new StringBuilder(Design.PREFIX);
+
+        String text = txt.toString();
+
+        StringBuilder styledString = new StringBuilder();
+
+        Stack<StringBuilder> styles = new Stack<>();
+        styles.push(new StringBuilder(Design.PREFIX));
 
         boolean hasValidStyle = false;
 
         for(int i = 0; i < STYLE.length; i++){
             if(STYLE[i] == 0) continue;
-            if(i > 0) wrapString.append(";");
-            wrapString.append(STYLE[i]);
+            if(i > 0) styles.peek().append(";");
+            styles.peek().append(STYLE[i]);
             hasValidStyle = true;
         }
+
+        if(hasValidStyle == false) styles.pop();
         
-        if(hasValidStyle == false) return txt.toString();
+        if(!styles.isEmpty()) styledString.append(styles.peek() + Design.POSTFIX);
 
+        for(int i = 0; i < text.length(); i++){
+            if(text.charAt(i) == Design.PREFIX.charAt(0)){
+                StringBuilder str = new StringBuilder();
+                boolean isReset = false;
+
+                while(i < text.length()){
+                    str.append(text.charAt(i));
+                    if(text.charAt(i) == '0') isReset = true;
+                    i++;
+                    if(text.charAt(i) == 'm') break;
+                }
+
+                if(isReset){
+                    if(!styles.isEmpty()) styles.pop();
+                    styledString.append(str);
+                }
+                else if(!styles.isEmpty()){
+                    styles.push(str);
+                }
+                if(!styles.isEmpty()) {
+                    styledString.append(Design.RESET);
+                    styledString.append(styles.peek());
+                }
+            }
+
+            styledString.append(text.charAt(i));
+        }
+        if(!styles.isEmpty()) styledString.append(Design.RESET);
+
+        return styledString.toString();
+    }
+    public static String stylesToString(byte... STYLE){
+        StringBuilder wrapString = new StringBuilder(Design.PREFIX);
+
+        for(int i = 0; i < STYLE.length; i++){
+            if(STYLE[i] == 0) continue;
+            if(i > 0) wrapString.append(";");
+            wrapString.append(STYLE[i]);
+        }
         wrapString.append(Design.POSTFIX);
-        wrapString.append(txt.toString());
-        wrapString.append(Design.RESET);
-
         return wrapString.toString();
     }
     public static String parseDesign(String ansiString){
@@ -78,6 +113,9 @@ public class Print{
         short contentWidth = (short)Math.max(width - minWidth, 1);
         short contentHeight = 0;
         
+        short contentStartHorizontal = (short) (design.getMarginLeft() + design.getBorderLeft() + design.getPaddingLeft() + 1);
+        short contentEndHorizontal = (short) (contentStartHorizontal + contentWidth - 1);
+
         short index = 1;
 
         for(short i = 0; i < parsedTxt.length(); i++){
@@ -85,8 +123,9 @@ public class Print{
                 contentHeight++;
                 index = 1;
             }
-            index++;
+            else index++;
         }
+        if(parsedTxt.length() % contentWidth > 0) contentHeight++;
 
         contentHeight = (short)Math.max(contentHeight, 1);
 
@@ -131,7 +170,17 @@ public class Print{
         int charIndex = 0;
         int space = 0;
         
-        Stack<StringBuilder> customStyles = new Stack<>();
+        Stack<StringBuilder> styles = new Stack<>();
+
+        styles.push(new StringBuilder(stylesToString(
+            design.getTextColor(),
+            design.getBackgroundColor(),
+            design.bold,
+            design.doubleLine,
+            design.italic,
+            design.strike,
+            design.underline
+        )));
 
         for(int line = 1; line <= height; line++){
             boolean nextLine = false;
@@ -175,6 +224,9 @@ public class Print{
                     designedString.append(WHITE_SPACE);
                 }
                 else{
+                    if(contentStartHorizontal == cursor && charIndex < text.length() && text.charAt(charIndex) != Design.PREFIX.charAt(0)) {
+                        designedString.append(styles.peek());
+                    }
                     if(charIndex >= text.length()){
                         designedString.append(WHITE_SPACE);
                     }
@@ -186,65 +238,47 @@ public class Print{
                             charIndex++;
                         }
                         if(nextLine){
-                            designedString.append(WHITE_SPACE);
-                            continue;
-                        }
-                        
-                        // unicode detection
-                        if(text.charAt(charIndex) == Design.PREFIX.charAt(0)){
-                            if(customStyles.isEmpty()){
-                                customStyles.push(new StringBuilder());
-                            }
-                            while(charIndex < text.length()){
-                                customStyles.peek().append(text.charAt(charIndex));
-                                charIndex++;
-                                if(text.charAt(charIndex-1) == 'm') break;
-                            }
-                            cursor--;
-                            continue;
-                        }
-                        if(text.charAt(charIndex) == Design.RESET.charAt(0)){
-                            customStyles.pop();
-                            while(charIndex < text.length()){
-                                charIndex++;
-                                if(text.charAt(charIndex-1) == 'm') break;
-                            }
-                            cursor--;
-                            continue;
-                        }
-                        // if(text.charAt(charIndex) == '\u001B' || text.charAt(charIndex) == '\033'){
-                        //     while(charIndex < text.length()){
-                        //         if(text.charAt(charIndex) == '\u001B') startStyle.append(text.charAt(charIndex));
-                        //         charIndex++;
-                        //         if(text.charAt(charIndex-1) == 'm') break;
-                        //     }
-                        //     cursor--;
-                        //     continue;
-                        // }
-
-                        if(space > 0){
-                            designedString.append(WHITE_SPACE);
-                            space--;
+                            designedString.append(" ");
                         }
                         else{
-                            if(!customStyles.isEmpty()) {
-                                designedString.append(wrapStyle(text.charAt(charIndex), customStyles.peek().toString()));
+                            // unicode detection
+                            
+                            if(text.charAt(charIndex) == Design.PREFIX.charAt(0)){
+                                // ANSI started:
+                                StringBuilder str = new StringBuilder();
+
+                                boolean isReset = false;
+                                
+                                while(charIndex < text.length()){
+                                    str.append(text.charAt(charIndex));
+                                    if(text.charAt(charIndex) == '0') isReset = true;
+                                    charIndex++;
+                                    if(text.charAt(charIndex-1) == 'm') break;
+                                }
+                                if(isReset){
+                                    if(!styles.isEmpty()) styles.pop();
+                                    designedString.append(Design.RESET);
+                                }
+                                else{
+                                    styles.push(str);
+                                }
+                                if(!styles.isEmpty()) designedString.append(styles.peek());
+                                cursor--;
+                                continue;
                             }
-                            else
-                                designedString.append(wrapStyle(text.charAt(charIndex), 
-                                    design.getTextColor(),
-                                    design.getBackgroundColor(),
-                                    design.bold,
-                                    design.doubleLine,
-                                    design.italic,
-                                    design.strike,
-                                    design.underline
-                                ));
-                            space = design.getLetterSpacing();
-                            charIndex++;
+
+                            if(space > 0){
+                                designedString.append(WHITE_SPACE);
+                                space--;
+                            }
+                            else{
+                                designedString.append(text.charAt(charIndex));
+                                space = design.getLetterSpacing();
+                                charIndex++;
+                            }
                         }
                     }
-
+                    if(contentEndHorizontal == cursor) designedString.append(Design.RESET);
                 }
             }
             designedString.append(NEXT_LINE);
@@ -253,9 +287,16 @@ public class Print{
         return designedString.toString();
     }
     public static void printStyle(Object txt, byte... STYLES){
+        System.out.print(wrapStyle(txt, STYLES));
+    }
+    public static void printlnStyle(Object txt, byte... STYLES){
         System.out.println(wrapStyle(txt, STYLES));
+    }
+    public static void printLine(int count){
+        System.out.print(createTextNode("\n", count));
     }
     public static void printDesign(Object txt, Design design){
         System.out.println(wrapDesign(txt, design));
     }
+
 }

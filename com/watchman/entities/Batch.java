@@ -2,6 +2,7 @@ package com.watchman.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 
 import com.watchman.services.DatabaseService;
 
@@ -11,6 +12,7 @@ public class Batch implements DatabaseService, Serializable{
     private int numberOfSeats;
     private LocalDate startDate;
     private int durationInDays;
+    public HashSet<String> faculties = new HashSet<>(1);
     
     public Batch(String id, String courseName, int numberOfSeats, LocalDate startDate, int durationInDays) {
         this.ID = id;
@@ -50,7 +52,8 @@ public class Batch implements DatabaseService, Serializable{
     @Override
     public String toString() {
         return "Batch [ID=" + ID + ", courseName=" + courseName + ", numberOfSeats=" + numberOfSeats + ", startDate="
-                + startDate + ", durationInDays=" + durationInDays + "]";
+                + startDate + ", durationInDays=" + durationInDays + ", faculties=" + faculties + "]";
     }
+    
     
 }

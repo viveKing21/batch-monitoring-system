@@ -26,6 +26,7 @@ public class Design{
     public static final byte CYAN_BACKGROUND = 46;
     public static final byte WHITE_BACKGROUND = 47;
     public static final String RESET = "\033[0m"; 
+    public static final String BLANK = PREFIX + POSTFIX + " " + RESET;
 
     private int screen;
     private int lineHeight = 1;
@@ -140,8 +141,8 @@ public class Design{
         this.borderStyle[1] = borderStyle;
     }
     public void setBorderStyle(String vertical, String horizontal) {
-        this.borderStyle[0] = vertical;
-        this.borderStyle[1] = horizontal;
+        this.borderStyle[0] = horizontal;
+        this.borderStyle[1] = vertical;
     }
     public int getMarginTop(){
         return margin[0];

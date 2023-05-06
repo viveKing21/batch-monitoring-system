@@ -1,49 +1,61 @@
 package com.watchman.management;
 
 import java.util.List;
+
 import com.watchman.entities.User;
+import com.watchman.entities.UserDetails;
 import com.watchman.exceptions.DatabaseException;
 import com.watchman.print.Design;
 import com.watchman.print.Print;
 import com.watchman.services.AdministratorService;
+import com.watchman.utils.Messages;
+import com.watchman.utils.UidGen;
 
 public class Authentication{
-    static private User user;
+    Database<User> USER_DB;
+    Database<User> AUTH_DB;
+    public User user;
     private List<User> users;
 
-    public Authentication() throws DatabaseException{
+    public Authentication(Database<User> USER_DB) throws DatabaseException{
+        this.USER_DB = USER_DB;
+        this.users = USER_DB.getAll();
+
         if(Database.databaseExist("auth.ser")){
-            user = (User) new Database<User>("auth.ser").getAll().get(0);
+            AUTH_DB = new Database<User>("auth.ser");
+            user = (User) AUTH_DB.getAll().get(0);
         }
         else{
             user = null;
+            AUTH_DB = null;
         }
     }
     public boolean loginAsAdmin(String username, String password) throws DatabaseException{
         if(user != null){
-            Print.printStyle("You're already logged in!", Design.RED, Design.YELLOW_BACKGROUND, Design.BOLD);
+            Print.printlnStyle("You're already logged in!", Design.RED, Design.YELLOW_BACKGROUND, Design.BOLD);
             return false;
         }
 
         if(username.equals(AdministratorService.USERNAME) && password.equals(AdministratorService.PASSWORD)) {
-            user = new User(AdministratorService.UID, username, "admin", password, null);
-            new Database<User>("auth.ser").add(user).save();
+            user = new User(AdministratorService.UID, username, password, "admin", null);
+            AUTH_DB = new Database<User>("auth.ser");
+            AUTH_DB.add(user).save();
             return true;
         }
         else{
-            Print.printStyle("Invalid credentials!", Design.RED, Design.YELLOW_BACKGROUND, Design.BOLD);
+            Messages.warning("Invalid credentials!");
             return false;
         }
     }
     public boolean login(String username, String password) throws DatabaseException{
         if(user != null){
-            Print.printStyle("You're already logged in!", Design.RED, Design.YELLOW_BACKGROUND, Design.BOLD);
+            Print.printlnStyle("You're already logged in!", Design.RED, Design.YELLOW_BACKGROUND, Design.BOLD);
             return false;
         }
 
         if(users == null){
-            users = new Database<User>("users.ser").getAll();
-        };
+            users = USER_DB.getAll();
+        }
 
         for(User userInfo : users){
             if(username.equals(userInfo.USERNAME) && password.equals(userInfo.PASSWORD)){
@@ -53,12 +65,40 @@ public class Authentication{
         }
 
         if(user == null){
-            Print.printStyle("Invalid credentials!", Design.RED, Design.YELLOW_BACKGROUND, Design.BOLD);
+            Messages.warning("Invalid credentials!");
             return false;
         }
-        
-        new Database<User>("auth.ser").add(user).save();
+        AUTH_DB = new Database<User>("auth.ser");
+        AUTH_DB.add(user).save();
         
         return true;
+    }
+    public boolean register(String username, String password, String number, String state, String city, int zipcode){
+        boolean result = USER_DB.add(
+            new User(
+                UidGen.generate(), 
+                username, 
+                password, 
+                "user",
+                new UserDetails(number, state, city, zipcode)
+            )
+        ).save();
+
+        if(result){
+            users = USER_DB.getAll();
+            return true;
+        }
+        return false;
+    }
+    public boolean logout(){
+        if(AUTH_DB != null){
+            if(AUTH_DB.deleteDatabase()){
+                user = null;
+                users = null;
+                AUTH_DB = null;
+                return true;
+            }
+        }
+        return false;
     }
 }
