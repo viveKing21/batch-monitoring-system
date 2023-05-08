@@ -4,24 +4,46 @@ This is a simple Java mini project for batch monitoring, designed to manage two 
 
 ## **Features**
 
+- **Libraries (created):**
+  - Design & Print class (add custom styling for terminal)
+  - Database class (Managing serialization & deserialization)
+
 - **Admin functionality:**
-  - Login with static username and password
-  - Create batches
-  - Assign batches to faculty members
+  - Create Batch
+  - Update batch
+  - View specific/all batch.
+  - Delete a batch
 
 - **Faculty functionality:**
   - Register as a faculty member
   - Login
   - View all assigned batches
+  - Delete their accounts
 
 ## **Technologies Used**
 
 - **Java**
-- **MySQL** (for database management)
-- **JavaFX** (for the graphical user interface)
 
 ## **Installation**
 
 1. Clone the repository:
    ```shell
-   git clone https://github.com/your-username/batch-monitoring-mini-project.git
+   git clone https://github.com/viveKing21/bashful-invention-7775.git
+2. Import the project into your preferred Java IDE (e.g., Eclipse, IntelliJ IDEA).
+3. Build and run the application.
+
+## **Usage**
+
+1. Run the application using run.bat.
+2. Admin functionality:
+
+
+
+Login using the static username and password.
+Create batches by providing the necessary details.
+Assign batches to faculty members by selecting a batch and a faculty member from the available options.
+Faculty functionality:
+
+Register as a faculty member by providing the required information.
+Login using the credentials used during registration.
+View all assigned batches.
