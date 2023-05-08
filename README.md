@@ -39,6 +39,7 @@ This is a simple Java mini project for batch monitoring, designed to manage two 
     - Login as administrator
     - Login as faculty member
     - Create a new account
+    
 3. Admin Options:
     - Create a new batch
     - Update existing batch
@@ -48,6 +49,7 @@ This is a simple Java mini project for batch monitoring, designed to manage two 
     - View a batch assinged to a faculty
     - Delete a batch
     - Logout
+    
 4. Faculty Member's Options:
     - View faculty
     - Delete account
