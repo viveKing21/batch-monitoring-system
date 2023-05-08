@@ -29,6 +29,7 @@ public class Database<T extends DatabaseService & Serializable> {
         if(CACHE.containsKey(DATABASE_NAME)) return (boolean) CACHE.get(DATABASE_NAME);
         return new File(DIRECTORY, DATABASE_NAME).exists();
     }
+    @SuppressWarnings("unchecked")
     public Database(final String DATABASE_NAME) throws DatabaseException{
         FILE = new File(DIRECTORY, DATABASE_NAME);
 
@@ -68,6 +69,7 @@ public class Database<T extends DatabaseService & Serializable> {
             return false;
         }
     }
+    @SuppressWarnings("unchecked")
     final public boolean restore(){
         if(!DATABASE_EXIST) return false;
         
