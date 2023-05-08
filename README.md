@@ -35,15 +35,35 @@ This is a simple Java mini project for batch monitoring, designed to manage two 
 ## **Usage**
 
 1. Run the application using run.bat.
-2. Admin functionality:
+2. Startup Options:
+    - Login as administrator
+    - Login as faculty member
+    - Create a new account
+3. Admin Options:
+    - Create a new batch
+    - Update existing batch
+    - Assign faculty to batch
+    - View all batches
+    - View a specific batch
+    - View a batch assinged to a faculty
+    - Delete a batch
+    - Logout
+4. Faculty Member's Options:
+    - View faculty
+    - Delete account
+    - Logout
+
+## **Screenshots**
+
+![alt text](https://github.com/viveKing21/bashful-invention-7775/blob/77f09743253c7c6e8f873d3e2c6a8ffa1d35a4d2/Screenshots/Screenshot%202023-05-08%20135025.png)
+
+![alt text](https://github.com/viveKing21/bashful-invention-7775/blob/77f09743253c7c6e8f873d3e2c6a8ffa1d35a4d2/Screenshots/Screenshot%202023-05-08%20134952.png)
 
 
+## **Contributing**
 
-Login using the static username and password.
-Create batches by providing the necessary details.
-Assign batches to faculty members by selecting a batch and a faculty member from the available options.
-Faculty functionality:
+Contributions are welcome! If you have any suggestions, bug reports, or improvements, please open an issue or submit a pull request.
 
-Register as a faculty member by providing the required information.
-Login using the credentials used during registration.
-View all assigned batches.
+## **Acknowledgments**
+
+[Java Documentation](https://docs.oracle.com/en/java)
