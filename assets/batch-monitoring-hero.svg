@@ -1,0 +1,117 @@
+<svg viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg" width="900" height="280">
+  <defs>
+    <linearGradient id="bgBatch" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1e"/>
+      <stop offset="50%" stop-color="#0d1a0f"/>
+      <stop offset="100%" stop-color="#0a1628"/>
+    </linearGradient>
+    <linearGradient id="accentBatch" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f0a500"/>
+      <stop offset="100%" stop-color="#f5d020"/>
+    </linearGradient>
+    <linearGradient id="accentGreen" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00b300"/>
+      <stop offset="100%" stop-color="#39ff14"/>
+    </linearGradient>
+    <linearGradient id="terminalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#0d0d0d"/>
+    </linearGradient>
+    <filter id="glowBatch">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <filter id="glowGreen">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="280" fill="url(#bgBatch)"/>
+
+  <!-- Ambient glow -->
+  <ellipse cx="680" cy="100" rx="180" ry="120" fill="#f0a500" opacity="0.07" filter="url(#glowBatch)"/>
+  <ellipse cx="820" cy="210" rx="120" ry="80" fill="#39ff14" opacity="0.07" filter="url(#glowBatch)"/>
+
+  <!-- Subtle grid -->
+  <pattern id="gridp" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M40 0 L0 0 L0 40" fill="none" stroke="#ffffff" stroke-width="0.3" opacity="0.04"/>
+  </pattern>
+  <rect width="900" height="280" fill="url(#gridp)"/>
+
+  <!-- ===== TERMINAL WINDOW ===== -->
+  <rect x="472" y="22" rx="10" ry="10" width="408" height="238" fill="#111111" stroke="#333333" stroke-width="1.5"/>
+  <!-- Title bar -->
+  <rect x="472" y="22" rx="10" ry="10" width="408" height="28" fill="#1e1e1e"/>
+  <rect x="472" y="38" width="408" height="12" fill="#1e1e1e"/>
+  <!-- Traffic lights -->
+  <circle cx="492" cy="36" r="5" fill="#ff5f56"/>
+  <circle cx="508" cy="36" r="5" fill="#ffbd2e"/>
+  <circle cx="524" cy="36" r="5" fill="#27c93f"/>
+  <!-- Window title -->
+  <text x="680" y="40" font-family="monospace" font-size="9" fill="#888888" text-anchor="middle">Batch Monitoring System</text>
+
+  <!-- Terminal content -->
+  <!-- Prompt line 1 -->
+  <text x="488" y="72" font-family="monospace" font-size="9" fill="#39ff14">$</text>
+  <text x="498" y="72" font-family="monospace" font-size="9" fill="#cccccc"> java -jar BatchMonitor.jar</text>
+
+  <!-- Separator -->
+  <text x="488" y="88" font-family="monospace" font-size="8" fill="#444444">─────────────────────────────────────────</text>
+
+  <!-- Startup menu -->
+  <text x="488" y="103" font-family="monospace" font-size="8.5" fill="#f5d020" font-weight="bold">  BATCH MONITORING SYSTEM</text>
+  <text x="488" y="117" font-family="monospace" font-size="8" fill="#555555">──────────────────────────────</text>
+
+  <text x="488" y="131" font-family="monospace" font-size="8.5" fill="#aaaaaa">  [1]</text>
+  <text x="516" y="131" font-family="monospace" font-size="8.5" fill="#cccccc"> Login as Administrator</text>
+
+  <text x="488" y="145" font-family="monospace" font-size="8.5" fill="#aaaaaa">  [2]</text>
+  <text x="516" y="145" font-family="monospace" font-size="8.5" fill="#cccccc"> Login as Faculty</text>
+
+  <text x="488" y="159" font-family="monospace" font-size="8.5" fill="#aaaaaa">  [3]</text>
+  <text x="516" y="159" font-family="monospace" font-size="8.5" fill="#cccccc"> Register New Account</text>
+
+  <text x="488" y="173" font-family="monospace" font-size="8" fill="#555555">──────────────────────────────</text>
+
+  <!-- Admin panel section -->
+  <text x="488" y="188" font-family="monospace" font-size="8" fill="#f0a500">  [ADMIN]</text>
+  <text x="540" y="188" font-family="monospace" font-size="8" fill="#888888"> Create · Update · Assign · Delete</text>
+
+  <text x="488" y="202" font-family="monospace" font-size="8" fill="#39ff14">  [FACULTY]</text>
+  <text x="546" y="202" font-family="monospace" font-size="8" fill="#888888"> View Batches · Manage Account</text>
+
+  <text x="488" y="218" font-family="monospace" font-size="8" fill="#555555">──────────────────────────────</text>
+
+  <!-- Prompt cursor -->
+  <text x="488" y="233" font-family="monospace" font-size="9" fill="#39ff14">$ </text>
+  <text x="498" y="233" font-family="monospace" font-size="9" fill="#cccccc">Enter option: </text>
+  <rect x="613" y="223" width="7" height="12" fill="#39ff14" opacity="0.9"/>
+
+  <!-- ===== LEFT: Title block ===== -->
+  <rect x="48" y="52" width="4" height="72" rx="2" fill="url(#accentBatch)"/>
+
+  <text x="68" y="80" font-family="'Courier New', monospace" font-size="13" fill="#f0a500" letter-spacing="3">BATCH MONITORING</text>
+  <text x="68" y="104" font-family="'Courier New', monospace" font-size="28" fill="#ffffff" font-weight="700" letter-spacing="-0.5">System</text>
+  <text x="68" y="126" font-family="monospace" font-size="11" fill="#39ff14" letter-spacing="1">Java · CLI · Serialization</text>
+
+  <!-- Tagline -->
+  <text x="68" y="160" font-family="Georgia, serif" font-size="13" fill="#b0b8c4" opacity="0.9">Terminal-based batch management for</text>
+  <text x="68" y="178" font-family="Georgia, serif" font-size="13" fill="#b0b8c4" opacity="0.9">admins and faculty — no database needed.</text>
+
+  <!-- Feature badges -->
+  <rect x="68" y="204" rx="10" ry="10" width="68" height="20" fill="#f0a500" opacity="0.12" stroke="#f0a500" stroke-width="1"/>
+  <text x="102" y="217" font-family="monospace" font-size="8" fill="#f5d020" text-anchor="middle">Admin Panel</text>
+
+  <rect x="146" y="204" rx="10" ry="10" width="74" height="20" fill="#39ff14" opacity="0.08" stroke="#39ff14" stroke-width="1"/>
+  <text x="183" y="217" font-family="monospace" font-size="8" fill="#39ff14" text-anchor="middle">Faculty Portal</text>
+
+  <rect x="230" y="204" rx="10" ry="10" width="76" height="20" fill="#4fc3f7" opacity="0.08" stroke="#4fc3f7" stroke-width="1"/>
+  <text x="268" y="217" font-family="monospace" font-size="8" fill="#4fc3f7" text-anchor="middle">File Persistence</text>
+
+  <rect x="316" y="204" rx="10" ry="10" width="52" height="20" fill="#ce93d8" opacity="0.1" stroke="#ce93d8" stroke-width="1"/>
+  <text x="342" y="217" font-family="monospace" font-size="8" fill="#ce93d8" text-anchor="middle">Pure Java</text>
+
+  <!-- Bottom accent bar -->
+  <rect x="0" y="270" width="900" height="10" fill="url(#accentBatch)" opacity="0.35"/>
+  <rect x="0" y="270" width="300" height="10" fill="url(#accentGreen)" opacity="0.35"/>
+</svg>
